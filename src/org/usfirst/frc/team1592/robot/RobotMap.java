@@ -37,6 +37,7 @@ public class RobotMap {
 	
 	//Data Loggers
 	public static FileOutputStream dataOutFile;
+	public static BufferedWriterFRC dataLogger;
 	public static RobotTelemetry loggerData; 
 	
 

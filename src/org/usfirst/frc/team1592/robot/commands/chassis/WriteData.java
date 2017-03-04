@@ -3,6 +3,7 @@ package org.usfirst.frc.team1592.robot.commands.chassis;
 import java.io.IOException;
 import java.util.function.DoubleSupplier;
 
+import org.usfirst.frc.team1592.robot.Robot;
 import org.usfirst.frc.team1592.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -15,8 +16,9 @@ public class WriteData extends Command{
 	}
 	// Called just before this Command runs the first time
     protected void initialize() {
+    	DoubleSupplier y=()->{return Robot.oi.driver.getY();};
     	DoubleSupplier pi = () -> {return 3.14159;};
-    	RobotMap.loggerData.registerDoubleStream("Joystick Y", "Push",pi);
+    	RobotMap.loggerData.registerDoubleStream("Joystick Y", "Push",y);
     	RobotMap.loggerData.endRegistration();
     	try {
 			RobotMap.loggerData.outputHeader();

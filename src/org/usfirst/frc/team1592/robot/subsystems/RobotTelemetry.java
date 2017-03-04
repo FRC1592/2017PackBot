@@ -17,7 +17,7 @@ import java.util.function.LongSupplier;
 public class RobotTelemetry {
 
 	/** Output Stream */
-	private final OutputStream out;
+	private final FileOutputStream out;
 
 	/** Registered Data Containers */
 	private final List<DataStream> streams; 
@@ -31,7 +31,7 @@ public class RobotTelemetry {
 	/** Standard Constructor */
 	public RobotTelemetry(OutputStream output, DoubleSupplier time) {
 		if (output==null) {throw new NullPointerException();}
-		out = output;
+		out = (FileOutputStream) output;
 		streams = new ArrayList<>();
 		locked = false;
 		registerDoubleStream("System Time", "s", time);
@@ -164,6 +164,8 @@ public class RobotTelemetry {
 	public final void outputHeader() throws IOException {
 		if (!isLocked()) {throw new IllegalStateException();}
 		for (DataStream s : streams) {
+			s.name();
+			s.units();
 			// Use the output stream input in the constructor
 			// Use DataStream.name() and DataStream.units();
 		}
@@ -179,7 +181,10 @@ public class RobotTelemetry {
 	public final void outputData() throws IOException {
 		if (!isLocked()) {throw new IllegalStateException();}
 		for (DataStream s : streams) {
-			
+			//for (int i=0;i<s.valueAsByteArray().length;i++)
+			//{
+			//out.write(s.valueAsByteArray()[i]);
+			//}
 			// Use the output stream input in the constructor
 			// Use DataStream.valueAsString(), DataStream.valueAsByteArray(), or DataStream.valueAsNumber()
 			// depending on how you want to output the data
