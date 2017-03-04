@@ -18,7 +18,7 @@ public class goToDistance extends Command{
 	// Called just before this Command runs the first time
     protected void initialize() {
     	SmartDashboard.putString("GoToDistance", "Started");
-    	Robot.logger.writeEventFRC("Go To Distance Started");
+    	RobotMap.logger.writeEventFRC("Go To Distance Started");
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -37,7 +37,7 @@ public class goToDistance extends Command{
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.logger.writeEventFRC("Go To Distance Started");
+    	RobotMap.logger.writeEventFRC("Go To Distance Started");
     	//Robot.chassis.drive(0, 0);
     }
 

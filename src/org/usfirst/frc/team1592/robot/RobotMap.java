@@ -1,19 +1,15 @@
 package org.usfirst.frc.team1592.robot;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.util.Calendar;
-import java.util.function.Supplier;
-import java.util.function.DoubleSupplier;
-
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import org.usfirst.frc.team1592.robot.subsystems.Arduino;
 import org.usfirst.frc.team1592.robot.subsystems.BufferedWriterFRC;
 import org.usfirst.frc.team1592.robot.subsystems.LIDAR;
 import org.usfirst.frc.team1592.robot.subsystems.RobotTelemetry;
-
 import com.ctre.CANTalon;
-
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.internal.HardwareTimer;
 
@@ -24,46 +20,24 @@ import edu.wpi.first.wpilibj.internal.HardwareTimer;
  * floating around.
  */
 public class RobotMap {
-	
-    // For example to map the left and right motors, you could define the
-    // following variables to use with your drivetrain subsystem.
-    // public static int leftMotor = 1;
-    // public static int rightMotor = 2;
-    
-    // If you are using multiple modules, make sure to define both the port
-    // number and the module. For example you with a rangefinder:
-    // public static int rangefinderPort = 1;
-    // public static int rangefinderModule = 1;
-	
-    public static CANTalon motorLeft=new CANTalon(Constants.LEFT);
+
+	public static CANTalon motorLeft=new CANTalon(Constants.LEFT);
 	public static CANTalon motorRight=new CANTalon(Constants.RIGHT);
 	public static RobotDrive driveBase=new RobotDrive(motorLeft, motorRight);
 	public static LIDAR lidar = new LIDAR();
 	public static Arduino arduino=new Arduino();
 	public static HardwareTimer timer=new HardwareTimer();
+
+	public static final File logPath = new File("/u/logs/");
 	
-	//telemetry trying stuff out
-	public static FileOutputStream o;
-	private FileOutputStream file;
-	public static Supplier<Double> timekeeper=()->{return timer.getFPGATimestamp();};
-	public static RobotTelemetry telemetry=new RobotTelemetry(o, (DoubleSupplier) timekeeper);
+	//Event Writer
+	public static final LocalDateTime day = LocalDateTime.now();
+	public static FileOutputStream eventOutFile;
+	public static BufferedWriterFRC logger;
 	
-	//trying something different out
+	//Data Loggers
+	public static FileOutputStream dataOutFile;
+	public static RobotTelemetry loggerData; 
 	
-	
-	public void robotInit() {
-		try {
-			file = new FileOutputStream("test.csv");
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try{
-			o = new FileOutputStream("test.csv");
-		} 
-		catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
-	private RobotTelemetry loggerData = new RobotTelemetry(file, () -> timer.getFPGATimestamp());
+
 }

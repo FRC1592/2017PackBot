@@ -11,40 +11,38 @@ import java.time.format.DateTimeFormatter;
 import org.usfirst.frc.team1592.robot.RobotMap;
 
 public class BufferedWriterFRC extends BufferedWriter {
-
-	private static final File logPath = new File("/u/logs/");
-	private static final LocalDateTime dateTime = LocalDateTime.now();
-	private static final File outFile=new File(logPath.toString() + "/log_" + 
-			dateTime.format(DateTimeFormatter.ofPattern("uu_MM_dd_HH_mm_ss")) + ".csv");
+	
 	private boolean isLogging;
-	private double time;
 
 	public BufferedWriterFRC() throws FileNotFoundException {
 
-		super(new OutputStreamWriter(new FileOutputStream(outFile)));
-		isLogging=true;
+		super(new OutputStreamWriter(RobotMap.eventOutFile));
+		
 		try { 
 			write("Time ,");
 			write("Name of Event ,");
 			write("Value Associated With Event ,");
 			newLine();
+			isLogging=true;
 		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
+			isLogging=false;
 		}
 	}
 
 	public void writeValueFRC(String name, String value) {
 		if (isLogging){
 			try {
-				time=(RobotMap.timer.getFPGATimestamp());
-				write(Double.toString(time)+",");
+				
+				write(Double.toString(RobotMap.timer.getFPGATimestamp())+",");
 				write(name + ", ");
 				write(value);
 				newLine();
 			} catch (IOException e) {
 				e.printStackTrace();
+				isLogging=false;
 			}
 		}
 	}
@@ -52,13 +50,13 @@ public class BufferedWriterFRC extends BufferedWriter {
 	public void writeValueFRC(String name, double value) {
 		if (isLogging){
 			try {
-				time=(RobotMap.timer.getFPGATimestamp());
-				write(Double.toString(time)+",");
+				write(Double.toString(RobotMap.timer.getFPGATimestamp())+",");
 				write(name + ", ");
 				write(Double.toString(value));
 				newLine();
 			} catch (IOException e) {
 				e.printStackTrace();
+				isLogging=false;
 			}
 		}
 	}
@@ -66,8 +64,7 @@ public class BufferedWriterFRC extends BufferedWriter {
 	public void writeValueFRC(String name, boolean value) {
 		if (isLogging){
 			try {
-				time=(RobotMap.timer.getFPGATimestamp());
-				write(Double.toString(time)+",");
+				write(Double.toString(RobotMap.timer.getFPGATimestamp())+",");
 				write(name + ", ");
 				if (value) 
 					write("True");
@@ -76,6 +73,7 @@ public class BufferedWriterFRC extends BufferedWriter {
 				newLine();
 			} catch (IOException e) {
 				e.printStackTrace();
+				isLogging=false;
 			}
 		}
 	}
@@ -83,8 +81,7 @@ public class BufferedWriterFRC extends BufferedWriter {
 		if (isLogging)
 		{
 			try {
-				time=(RobotMap.timer.getFPGATimestamp());
-				write(Double.toString(time)+",");
+				write(Double.toString(RobotMap.timer.getFPGATimestamp())+",");
 				write(name + ",");
 				System.out.println("Done Writing");
 				newLine();
@@ -101,8 +98,7 @@ public class BufferedWriterFRC extends BufferedWriter {
 		if (isLogging)
 		{
 			try {
-				time=(RobotMap.timer.getFPGATimestamp());
-				write(Double.toString(time)+",");
+				write(Double.toString(RobotMap.timer.getFPGATimestamp())+",");
 				write(name + ",");
 				System.out.println("Done Writing");
 				newLine();

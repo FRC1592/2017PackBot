@@ -16,7 +16,7 @@ public class CenterWithArduino extends Command{
     
 	// Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.logger.writeEventFRC("Center With Arduino Started");
+    	RobotMap.logger.writeEventFRC("Center With Arduino Started");
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -38,7 +38,7 @@ public class CenterWithArduino extends Command{
     // Called once after isFinished returns true
     protected void end() {
     	Robot.chassis.drive(0, 0);
-    	Robot.logger.writeEventFRC("Center With Arduino Ended");
+    	RobotMap.logger.writeEventFRC("Center With Arduino Ended");
     }
 
     // Called when another command which requires one or more of the same

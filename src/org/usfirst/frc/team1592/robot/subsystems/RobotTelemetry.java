@@ -179,6 +179,7 @@ public class RobotTelemetry {
 	public final void outputData() throws IOException {
 		if (!isLocked()) {throw new IllegalStateException();}
 		for (DataStream s : streams) {
+			
 			// Use the output stream input in the constructor
 			// Use DataStream.valueAsString(), DataStream.valueAsByteArray(), or DataStream.valueAsNumber()
 			// depending on how you want to output the data
@@ -365,7 +366,5 @@ public class RobotTelemetry {
 		}
 
 		@Override public Number valueAsNumber() {return Integer.valueOf(getValue() ? 1 : 0);}
-
 	}
-
 }

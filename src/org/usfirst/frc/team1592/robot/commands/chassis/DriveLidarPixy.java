@@ -13,18 +13,18 @@ public class DriveLidarPixy extends Command{
 	}
 	// Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.logger.writeEventFRC("DriveLidarPixy: Initialize");
+    	RobotMap.logger.writeEventFRC("DriveLidarPixy: Initialize");
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	Robot.chassis.LidarPixy();
-    	Robot.logger.writeEventFRC("DriveLidarPixy: Execute");
+    	RobotMap.logger.writeEventFRC("DriveLidarPixy: Execute");
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	Robot.logger.writeEventFRC("DriveLidarPixy: IsFinished");
+    	RobotMap.logger.writeEventFRC("DriveLidarPixy: IsFinished");
     	if (RobotMap.lidar.getDistance()<=Constants.targetDistance)
     	{
     		return true;
@@ -35,13 +35,13 @@ public class DriveLidarPixy extends Command{
     // Called once after isFinished returns true
     protected void end() {
     	Robot.chassis.drive(0, 0);
-    	Robot.logger.writeEventFRC("DriveLidarPixy: End", true);
+    	RobotMap.logger.writeEventFRC("DriveLidarPixy: End", true);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	Robot.logger.writeEventFRC("Circle: Interrupted", true);
+    	RobotMap.logger.writeEventFRC("Circle: Interrupted", true);
     	System.out.println("ended");
     }
 
