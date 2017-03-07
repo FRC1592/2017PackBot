@@ -1,7 +1,6 @@
 package org.usfirst.frc.team1592.robot.subsystems;
-
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
@@ -12,15 +11,13 @@ import java.util.function.DoubleSupplier;
 import java.util.function.IntSupplier;
 import java.util.function.LongSupplier;
 
-import org.usfirst.frc.team1592.robot.subsystems.RobotTelemetry.BooleanDataStream;
-import org.usfirst.frc.team1592.robot.subsystems.RobotTelemetry.DataStream;
-import org.usfirst.frc.team1592.robot.subsystems.RobotTelemetry.DoubleDataStream;
-import org.usfirst.frc.team1592.robot.subsystems.RobotTelemetry.IntDataStream;
-import org.usfirst.frc.team1592.robot.subsystems.RobotTelemetry.LongDataStream;
+/**
+ *  Robot Telemetry Class
+ */
+public class RoboTelem {
 
-public class RobotTelemetry {
 	/** Output Stream */
-	private final FileWriter outwrite;
+	private final OutputStream out;
 
 	/** Registered Data Containers */
 	private final List<DataStream> streams; 
@@ -32,29 +29,36 @@ public class RobotTelemetry {
 	/****************/
 
 	/** Standard Constructor */
-
-	public RobotTelemetry(FileWriter output, DoubleSupplier time) {
+	public RoboTelem(OutputStream output, DoubleSupplier time) {
 		if (output==null) {throw new NullPointerException();}
-		outwrite = output;
+		out = output;
 		streams = new ArrayList<>();
 		locked = false;
 		registerDoubleStream("System Time", "s", time);
-	}
-	// TODO Auto-generated constructor stub
+	}	
 
+	public RoboTelem(FileOutputStream output, DoubleSupplier time) {
+		if (output==null) {throw new NullPointerException();}
+		out = output;
+		streams = new ArrayList<>();
+		locked = false;
+		registerDoubleStream("System Time", "s", time);
+	}	
+		// TODO Auto-generated constructor stub
+	
 
 	/************************/
 	/** Static Constructors */
 	/************************/
 	/** Current Time In Milliseconds Constructor */
-	public static RobotTelemetry currentTimeMillis(FileWriter output) {
-		return new RobotTelemetry(output, () -> {return System.currentTimeMillis();});
+	public static RoboTelem currentTimeMillis(OutputStream output) {
+		return new RoboTelem(output, () -> {return System.currentTimeMillis();});
 	}
 
 	/** Zeroed Current Time In Milliseconds Constructor */
-	public static RobotTelemetry zeroedCurrentTimeMillis(FileWriter output) {
+	public static RoboTelem zeroedCurrentTimeMillis(OutputStream output) {
 		final long initialTime = System.currentTimeMillis();
-		return new RobotTelemetry(output, () -> {return System.currentTimeMillis()-initialTime;});
+		return new RoboTelem(output, () -> {return System.currentTimeMillis()-initialTime;});
 	}
 
 
@@ -160,17 +164,6 @@ public class RobotTelemetry {
 	public final void outputHeader() throws IOException {
 		if (!isLocked()) {throw new IllegalStateException();}
 		for (DataStream s : streams) {
-			try
-			{
-			outwrite.write(s.name());
-			outwrite.write(s.units());
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-			s.name();
-			s.units();
 			// Use the output stream input in the constructor
 			// Use DataStream.name() and DataStream.units();
 		}
@@ -186,18 +179,7 @@ public class RobotTelemetry {
 	public final void outputData() throws IOException {
 		if (!isLocked()) {throw new IllegalStateException();}
 		for (DataStream s : streams) {
-			try
-			{
-			outwrite.write(s.valuesAsString());
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-			//for (int i=0;i<s.valueAsByteArray().length;i++)
-			//{
-			//out.write(s.valueAsByteArray()[i]);
-			//}
+			
 			// Use the output stream input in the constructor
 			// Use DataStream.valueAsString(), DataStream.valueAsByteArray(), or DataStream.valueAsNumber()
 			// depending on how you want to output the data
@@ -211,7 +193,7 @@ public class RobotTelemetry {
 	/*******************************/
 
 	/** Internal Data Stream Container */
-	public static abstract class DataStream {
+	private static abstract class DataStream {
 
 		/** Information */
 		private final String _name;
@@ -250,7 +232,7 @@ public class RobotTelemetry {
 	/*************************************/
 
 	/** Internal Double Data Stream Container */
-	public static final class DoubleDataStream extends DataStream {
+	private static final class DoubleDataStream extends DataStream {
 
 		/** Supplier */
 		private final DoubleSupplier _source;
@@ -286,7 +268,7 @@ public class RobotTelemetry {
 	/***********************************/
 
 	/** Internal Long Data Stream Container */
-	public static final class LongDataStream extends DataStream {
+	private static final class LongDataStream extends DataStream {
 
 		/** Supplier */
 		private final LongSupplier _source;
@@ -322,7 +304,7 @@ public class RobotTelemetry {
 	/**********************************/
 
 	/** Internal Integer Data Stream Container */
-	public static final class IntDataStream extends DataStream {
+	private static final class IntDataStream extends DataStream {
 
 		/** Supplier */
 		private final IntSupplier _source;
@@ -358,7 +340,7 @@ public class RobotTelemetry {
 	/**************************************/
 
 	/** Internal Integer Data Stream Container */
-	public static final class BooleanDataStream extends DataStream {
+	private static final class BooleanDataStream extends DataStream {
 
 		/** Supplier */
 		private final BooleanSupplier _source;
@@ -385,5 +367,4 @@ public class RobotTelemetry {
 
 		@Override public Number valueAsNumber() {return Integer.valueOf(getValue() ? 1 : 0);}
 	}
-
 }

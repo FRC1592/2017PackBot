@@ -3,12 +3,14 @@ package org.usfirst.frc.team1592.robot;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import org.usfirst.frc.team1592.robot.subsystems.Arduino;
 import org.usfirst.frc.team1592.robot.subsystems.BufferedWriterFRC;
 import org.usfirst.frc.team1592.robot.subsystems.LIDAR;
 import org.usfirst.frc.team1592.robot.subsystems.RobotTelemetry;
+import org.usfirst.frc.team1592.robot.subsystems.RoboTelem;
 import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.internal.HardwareTimer;
@@ -37,8 +39,9 @@ public class RobotMap {
 	
 	//Data Loggers
 	public static FileOutputStream dataOutFile;
-	public static BufferedWriterFRC dataLogger;
-	public static RobotTelemetry loggerData; 
+	public static RoboTelem loggerData; 
+	public static RobotTelemetry loggerOut;
+	public static FileWriter dataFile;
 	
 
 }

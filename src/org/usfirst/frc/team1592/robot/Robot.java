@@ -7,12 +7,15 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.usfirst.frc.team1592.robot.subsystems.BufferedWriterFRC;
 import org.usfirst.frc.team1592.robot.subsystems.Chassis;
 import org.usfirst.frc.team1592.robot.subsystems.RobotTelemetry;
+import org.usfirst.frc.team1592.robot.subsystems.RoboTelem;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -54,14 +57,20 @@ public class Robot extends IterativeRobot {
 			RobotMap.dataOutFile=new FileOutputStream(RobotMap.logPath.toString()+"data_"+
 					RobotMap.day.format(DateTimeFormatter.ofPattern("uu_MM_dd_HH_mm_ss")) +
 					".csv");
+			RobotMap.dataFile=new FileWriter(RobotMap.logPath.toString()+"data_"+
+					RobotMap.day.format(DateTimeFormatter.ofPattern("uu_MM_dd_HH_mm_ss")) +
+					".csv");
 			
 		} 
 		catch (FileNotFoundException e)
 		{
 			e.printStackTrace();
 			System.out.println("WARNING: No drive available. If drive is mounted, try restarting the roboRIO");	
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		RobotMap.loggerData= new RobotTelemetry(RobotMap.dataOutFile, () -> RobotMap.timer.getFPGATimestamp());
+		RobotMap.loggerData= new RoboTelem(RobotMap.dataOutFile, () -> RobotMap.timer.getFPGATimestamp());
+		RobotMap.loggerOut=new RobotTelemetry(RobotMap.dataFile, ()->RobotMap.timer.getFPGATimestamp());
 	}
 	
 	/**
